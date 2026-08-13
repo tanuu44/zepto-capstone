@@ -78,4 +78,18 @@ data_pipeline/
 The complete pipeline was executed successfully using:
 
 ```powershell
+python run_pipeline.py---
+
+## Reproducibility Check
+
+The pipeline is designed to run end to end without manual copy-pasting.
+
+From the `data_pipeline` directory, the complete workflow can be executed with:
+
+```powershell
 python run_pipeline.py
+output/
+
+Save with:
+
+```text
