@@ -71,4 +71,25 @@ data_pipeline/
         ├── pd_read_sql_query_01.csv
         ├── pd_read_sql_join.csv
         ├── pd_merge_join.csv
-        └── sql_vs_pandas_merge.txt
+        └── sql_vs_pandas_merge.txt---
+
+## Module 1 Verification
+
+The complete pipeline was executed successfully using:
+
+```powershell
+python run_pipeline.py---
+
+## Reproducibility Check
+
+The pipeline is designed to run end to end without manual copy-pasting.
+
+From the `data_pipeline` directory, the complete workflow can be executed with:
+
+```powershell
+python run_pipeline.py
+output/
+
+Save with:
+
+```text
