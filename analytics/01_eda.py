@@ -19,9 +19,15 @@ print("MODULE 2 - TITANIC EDA")
 print("=" * 60)
 
 # ------------------------------------------------------------
-# 1. LOAD OFFLINE FALLBACK
+# 1 LOAD TITANIC DATASET
 # ------------------------------------------------------------
-df = pd.read_csv(CSV_PATH)
+df = sns.load_dataset("titanic")
+
+# Save raw dataset as offline fallback
+df.to_csv(CSV_PATH, index=False)
+
+print("\nRaw Titanic dataset saved to:")
+print(CSV_PATH)
 
 print("\nDATASET LOADED")
 print("-" * 60)
@@ -185,16 +191,55 @@ plt.close()
 print("\n" + "=" * 60)
 print("SURVIVAL ANALYSIS")
 print("=" * 60)
+# Survival by sex using boolean masking
+female_survival = cleaned_df.loc[
+    cleaned_df["sex"] == "female",
+    "survived"
+].mean()
 
-sex_survival = cleaned_df.groupby("sex")["survived"].mean()
+male_survival = cleaned_df.loc[
+    cleaned_df["sex"] == "male",
+    "survived"
+].mean()
 
-pclass_survival = cleaned_df.groupby("pclass")["survived"].mean()
+sex_survival = pd.Series({
+    "female": female_survival,
+    "male": male_survival
+})
 
-sex_pclass_survival = (
-    cleaned_df
-    .groupby(["sex", "pclass"])["survived"]
-    .mean()
-)
+
+# Survival by passenger class using boolean masking
+class_survival = {}
+
+for pclass in sorted(cleaned_df["pclass"].dropna().unique()):
+    class_survival[pclass] = cleaned_df.loc[
+        cleaned_df["pclass"] == pclass,
+        "survived"
+    ].mean()
+
+pclass_survival = pd.Series(class_survival)
+
+
+# Survival by sex AND passenger class using &
+sex_pclass_survival = {}
+
+for sex in ["female", "male"]:
+    for pclass in sorted(cleaned_df["pclass"].dropna().unique()):
+
+        mask = (
+            (cleaned_df["sex"] == sex)
+            & (cleaned_df["pclass"] == pclass)
+        )
+
+        sex_pclass_survival[
+            (sex, pclass)
+        ] = cleaned_df.loc[
+            mask,
+            "survived"
+        ].mean()
+
+sex_pclass_survival = pd.Series(sex_pclass_survival)
+
 
 print("\nSurvival rate by sex:")
 print(sex_survival)
@@ -302,6 +347,11 @@ plt.savefig(
     os.path.join(OUTPUT_DIR, "chart_1_survival_by_sex.png")
 )
 plt.close()
+print("\nCHART 1 INTERPRETATION")
+print(
+    "Female passengers had a substantially higher survival rate than male passengers. "
+    "This indicates that sex was strongly associated with survival outcomes in the Titanic dataset."
+)
 
 # Chart 2
 plt.figure(figsize=(8, 5))
@@ -317,7 +367,11 @@ plt.savefig(
     os.path.join(OUTPUT_DIR, "chart_2_survival_by_class.png")
 )
 plt.close()
-
+print("\nCHART 2 INTERPRETATION")
+print(
+    "Passengers in first class had the highest survival rate, while third-class passengers "
+    "had the lowest. This suggests that passenger class was strongly associated with survival."
+)
 # Chart 3
 plt.figure(figsize=(8, 5))
 sns.boxplot(
@@ -331,6 +385,11 @@ plt.savefig(
     os.path.join(OUTPUT_DIR, "chart_3_fare_by_class.png")
 )
 plt.close()
+print("\nCHART 3 INTERPRETATION")
+print(
+    "Fare distributions differ across passenger classes, with higher-class passengers generally "
+    "paying higher fares. The boxplot also shows substantial variation and high-fare outliers."
+)
 
 # Chart 4
 plt.figure(figsize=(8, 5))
@@ -347,6 +406,11 @@ plt.savefig(
     os.path.join(OUTPUT_DIR, "chart_4_survival_class_sex.png")
 )
 plt.close()
+print("\nCHART 4 INTERPRETATION")
+print(
+    "Female passengers generally had higher survival rates than males within each passenger class. "
+    "First-class females had particularly high survival, while third-class males had the lowest survival."
+)
 
 # Chart 5
 plt.figure(figsize=(8, 5))
@@ -363,7 +427,11 @@ plt.savefig(
     os.path.join(OUTPUT_DIR, "chart_5_age_fare_survival.png")
 )
 plt.close()
-
+print("\nCHART 5 INTERPRETATION")
+print(
+    "Fare values are concentrated at lower levels but become more widely dispersed at higher fares. "
+    "The plot also shows that survival outcomes vary across age and fare levels."
+)
 # ------------------------------------------------------------
 # 8. STANDARDIZATION SANITY CHECK
 # ------------------------------------------------------------
