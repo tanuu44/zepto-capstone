@@ -71,4 +71,11 @@ data_pipeline/
         ├── pd_read_sql_query_01.csv
         ├── pd_read_sql_join.csv
         ├── pd_merge_join.csv
-        └── sql_vs_pandas_merge.txt
+        └── sql_vs_pandas_merge.txt---
+
+## Module 1 Verification
+
+The complete pipeline was executed successfully using:
+
+```powershell
+python run_pipeline.py
