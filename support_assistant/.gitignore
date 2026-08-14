@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Test/cache files
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local databases / vector stores
+*.db
+*.sqlite
+*.sqlite3
+chroma/
+chromadb/
+.chroma/
+
+# Model/cache files
+.cache/
+.huggingface/
+huggingface_cache/
+
+# Build files
+build/
+dist/
+*.egg-info/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Coverage
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
